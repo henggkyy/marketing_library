@@ -9,9 +9,14 @@
             "email": "henggkyy@gmail.com"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "autoload": {
-        "psr-4": {"henggkyy\\Marketing\\": "src/"}
+        "psr-4": {
+            "Marketing\\": "src/Marketing"
+        },
+        "files": [
+            "src/Marketing/Whatsapp.php"
+        ]
     },
     "require": {}
 }
