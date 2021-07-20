@@ -3,14 +3,15 @@ namespace Marketing\Helper;
 use Exception;
 
 class SendRequest{
-    public $base_url = "https://tools.saturibu.com/";
+    public $base_url;
     public $api_key;
     public $app_id;
 
-    public function __construct($app_id, $api_key)
+    public function __construct($base_url, $app_id, $api_key)
     {
         $this->app_id = $app_id;
         $this->api_key = $api_key;
+        $this->base_url = $base_url;
     }
 
     public function sendRequest($postParam, $queryParam, $uri, $method){
