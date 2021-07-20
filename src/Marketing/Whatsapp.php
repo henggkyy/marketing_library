@@ -10,7 +10,7 @@ class Whatsapp{
     public $app_id;
     public $api_key;
 
-    public function construct($app_id, $api_key){
+    public function __construct($app_id, $api_key){
         $this->app_id = $app_id;
         $this->api_key = $api_key;
     }
@@ -26,10 +26,5 @@ class Whatsapp{
             throw new Exception($device_status['message']);
         }
         return $device_status;
-    }
-
-    public function greet($greet = "Hello World")
-    {
-        return $greet;
     }
 }
