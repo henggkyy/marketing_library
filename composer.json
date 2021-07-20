@@ -1,0 +1,17 @@
+{
+    "name": "henggkyy/marketing_library",
+    "description": "Marketing Library for Whatsapp and Push Notification",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hengky",
+            "email": "henggkyy@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {"henggkyy\\Marketing\\Whatsapp": "src/"}
+    },
+    "require": {}
+}
