@@ -4,12 +4,14 @@ namespace Marketing;
 use Exception;
 use Marketing\Helper;
 use Marketing\Helper\SendRequest;
+use Marketing\Helper\InputChecker;
 
 class Whatsapp{
 
     public $app_id;
     public $api_key;
     public $base_url;
+
 
     public function __construct($base_url, $app_id, $api_key){
         $this->app_id = $app_id;
@@ -100,5 +102,50 @@ class Whatsapp{
             throw new Exception($session_health['message']);
         }
         return $session_health;
+    }
+
+    public function sendMessage($array_phone_number, $message, $image, $sending_type, $sending_date=false){
+        $request = new SendRequest($this->base_url, $this->app_id, $this->api_key);
+        $type = 1;
+        if($message == ""){
+            throw new Exception("message_required");
+        }
+        if(count($array_phone_number) <= 0){
+            throw new Exception("phone_number_list_required");
+        }
+
+        if($sending_type === 2 && !$sending_date){
+            throw new Exception("sending_date_required");
+        }
+
+        foreach($array_phone_number as $key=>$phone){
+            if(!$phone->number){
+                throw new Exception("phone_number_required");
+            }
+        }
+
+        
+
+        $data = array();
+        $data['whatsapps'] = $array_phone_number;
+        $data['type'] = 1;
+        if($image){
+            $data['type'] = 2;
+            $data['image'] = $image;
+        }
+        $data['message'] = $message;
+        $data['sending_type'] = $sending_type;
+        if($sending_type === 2){
+            $data['sending_date'] = $sending_date;
+        }
+
+        $endpoint = 'wa/blast/phone';
+        $method = 'POST';
+
+        $send_messages = $request->sendRequest($data, null, $endpoint, $method);
+        if($send_messages['error'] === true){
+            throw new Exception($send_messages['message']);
+        }
+        return $send_messages;
     }
 }
