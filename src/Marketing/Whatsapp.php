@@ -104,9 +104,77 @@ class Whatsapp{
         return $session_health;
     }
 
+    public function sendOtp($phone_number, $otp, $country=false){
+        $request = new SendRequest($this->base_url, $this->app_id, $this->api_key);
+        $data = array();
+        $data['phone'] = $phone_number;
+        $data['country'] = $country;
+        $data['message'] = $otp;
+
+        $endpoint = 'wa/verification/send';
+        $method = 'POST';
+
+        $send_messages = $request->sendRequest($data, null, $endpoint, $method);
+        if($send_messages['error'] === true){
+            throw new Exception($send_messages['message']);
+        }
+        return $send_messages;
+    }
+
+    public function verifyOtp($phone_number, $otp, $country=false){
+        $request = new SendRequest($this->base_url, $this->app_id, $this->api_key);
+        $data = array();
+        $data['phone'] = $phone_number;
+        $data['country'] = $country;
+        $data['message'] = $otp;
+
+        $endpoint = 'wa/verification/verify';
+        $method = 'POST';
+
+        $verify_message = $request->sendRequest($data, null, $endpoint, $method);
+        if($verify_message['error'] === true){
+            throw new Exception($verify_message['message']);
+        }
+        return $verify_message;
+    }
+
+    public function sendMessageByGroup($user_group, $message, $image, $sending_type, $sending_date=false){
+        $request = new SendRequest($this->base_url, $this->app_id, $this->api_key);
+        if($message == ""){
+            throw new Exception("message_required");
+        }
+        if(!$user_group){
+            throw new Exception("user_group_required");
+        }
+
+        if($sending_type === 2 && !$sending_date){
+            throw new Exception("sending_date_required");
+        }
+        $data = array();
+        $data['user_group'] = $user_group;
+        $data['type'] = 1;
+        if($image){
+            $data['type'] = 2;
+            $data['image'] = $image;
+        }
+        $data['message'] = $message;
+        $data['sending_type'] = $sending_type;
+        if($sending_type === 2){
+            $data['sending_date'] = $sending_date;
+        }
+
+        $endpoint = 'wa/blast/group';
+        $method = 'POST';
+
+        $send_messages = $request->sendRequest($data, null, $endpoint, $method);
+        if($send_messages['error'] === true){
+            throw new Exception($send_messages['message']);
+        }
+        return $send_messages;
+    }
+
     public function sendMessage($array_phone_number, $message, $image, $sending_type, $sending_date=false){
         $request = new SendRequest($this->base_url, $this->app_id, $this->api_key);
-        $type = 1;
         if($message == ""){
             throw new Exception("message_required");
         }
