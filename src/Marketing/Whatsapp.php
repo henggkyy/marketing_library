@@ -126,7 +126,7 @@ class Whatsapp{
         $data = array();
         $data['phone'] = $phone_number;
         $data['country'] = $country;
-        $data['message'] = $otp;
+        $data['otp'] = $otp;
 
         $endpoint = 'wa/verification/verify';
         $method = 'POST';
